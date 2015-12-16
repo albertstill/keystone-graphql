@@ -20,17 +20,14 @@ const Types = keystone.Field.Types;
 
 describe('convertListToFields', () => {
   keystone.init();
-  keystone.set('cloudinary config', { cloud_name: 'my-cloud', api_key: 'abc', api_secret: '123' });
+  keystone.set('cloudinary config', { cloud_name: 'my-cloud', api_key: 'abc',
+    api_secret: '123' });
 
   it('can convert a really basic List', () => {
-    const Post = new keystone.List('Post', {
-      autokey: { path: 'slug', from: 'title', unique: true },
-      map: { name: 'title' },
-      defaultSort: '-createdAt',
-    });
+    const Post = new keystone.List('Post');
 
     Post.add({
-      title: { type: Types.Text, required: true },
+      title: { type: Types.Text, required: true, initial: false },
       subtitle: { type: String },
     });
 
@@ -43,21 +40,14 @@ describe('convertListToFields', () => {
   });
 
   it('can convert a more complex List', () => {
-
-    keystone.init();
-
-    const Meetup = new keystone.List('Meetup', {
-      autokey: { path: 'slug', from: 'title', unique: true },
-      map: { name: 'title' },
-      defaultSort: '-createdAt',
-    });
+    const Meetup = new keystone.List('Meetup');
 
     Meetup.add({
       description: { type: Types.Markdown },
       name: { type: Types.Name, required: true },
       picture: { type: Types.CloudinaryImage },
       where: { type: Types.Location },
-      mainContact: { type: Types.Email, required: true, initial: false },
+      mainContact: { type: Types.Email },
     });
 
     Meetup.register()
@@ -67,7 +57,7 @@ describe('convertListToFields', () => {
       name: { type: new GraphQLNonNull(KeystoneGraphQLName) },
       picture: { type: KeystoneGraphQLCloudinaryImage },
       where: { type: KeystoneGraphQLLocation },
-      mainContact: { type: new GraphQLNonNull(KeystoneGraphQLEmail) },
+      mainContact: { type: KeystoneGraphQLEmail },
     })
   });
 });
