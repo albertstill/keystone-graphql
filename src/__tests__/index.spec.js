@@ -18,7 +18,7 @@ import {
 const Types = keystone.Field.Types;
 
 
-describe('convertListToFields', () => {
+describe('#convertListToFields', () => {
   keystone.init();
   keystone.set('cloudinary config', { cloud_name: 'my-cloud', api_key: 'abc',
     api_secret: '123' });
@@ -74,6 +74,45 @@ describe('convertListToFields', () => {
     expect(convertListToFields(Car)).to.deep.equal({
       name: { type: new GraphQLNonNull(KeystoneGraphQLName) },
       description: { type: new GraphQLNonNull(GraphQLString)},
+    })
+  });
+
+  it('coverts a List that uses the GQL field config functions', () => {
+    const Meeting = new keystone.List('Meeting');
+
+    Meeting.add({
+      name: { type: Types.Datetime  },
+      cost: { type: Types.Money },
+    });
+
+    Meeting.register()
+
+    let result = convertListToFields(Meeting);
+
+    // remove the resolve functions so the assertion can work
+    delete result.name.resolve
+    delete result.cost.resolve
+
+    expect(result).to.deep.equal({
+      name: {
+        type: GraphQLString,
+        args: {
+          format: {
+            type: GraphQLString,
+            description: 'A formated datetime using Moment.js tokens ' +
+              'http://momentjs.com/docs/#/displaying/format/',
+          },
+        },
+      },
+      cost: {
+        type: GraphQLString,
+        args: {
+          format: {
+            type: GraphQLString,
+            description: 'Formats the stored value using http://numeraljs.com/',
+          },
+        },
+      },
     })
   });
 });

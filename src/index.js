@@ -15,7 +15,7 @@ import {
   KeystoneGraphQLLocalFile,
   KeystoneGraphQLS3File,
   KeystoneGraphQLAzureFile,
-} from './keystoneGraphQLObjectTypes.js'
+} from './keystoneGraphQLObjectTypes'
 
 // functions that generate GraphQLFieldConfig's that include format arguments
 import {
@@ -24,7 +24,7 @@ import {
   url,
   money,
   number,
-} from './keystoneGraphQLFieldConfigs.js'
+} from './keystoneGraphQLFieldConfigFunctions'
 
 import { conditionalNullWrap } from './utils';
 
