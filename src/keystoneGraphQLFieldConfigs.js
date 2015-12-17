@@ -1,11 +1,14 @@
 import {
   GraphQLString,
   GraphQLBoolean,
+  GraphQLFloat,
 } from 'graphql';
+
+import { conditionalNullWrap } from './utils'
 
 export function date(field) {
   return({
-    type: GraphQLString,
+    type: conditionalNullWrap(field, GraphQLString),
     args: {
       format: {
         type: GraphQLString,
@@ -24,7 +27,7 @@ export function date(field) {
 
 export function datetime(field) {
   return({
-    type: GraphQLString,
+    type: conditionalNullWrap(field, GraphQLString),
     args: {
       format: {
         type: GraphQLString,
@@ -41,9 +44,45 @@ export function datetime(field) {
   });
 }
 
+export function money(field) {
+  return({
+    type: conditionalNullWrap(field, GraphQLString),
+    args: {
+      format: {
+        type: GraphQLString,
+        description: 'Formats the stored value using http://numeraljs.com/',
+      },
+    },
+    resolve: (source, args) => {
+      if (args.format) {
+        return field.format(source, args.format);
+      }
+      return source.get(field.path);
+    },
+  });
+}
+
+export function number(field) {
+  return({
+    type: conditionalNullWrap(field, GraphQLFloat),
+    args: {
+      format: {
+        type: GraphQLString,
+        description: 'Formats the stored value using http://numeraljs.com/',
+      },
+    },
+    resolve: (source, args) => {
+      if (args.format) {
+        return field.format(source, args.format);
+      }
+      return source.get(field.path);
+    },
+  });
+}
+
 export function url(field) {
   return({
-    type: GraphQLString,
+    type: conditionalNullWrap(field, GraphQLString),
     args: {
       format: {
         type: GraphQLBoolean,

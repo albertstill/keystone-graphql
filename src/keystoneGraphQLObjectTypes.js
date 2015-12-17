@@ -3,6 +3,8 @@ import {
   GraphQLList,
   GraphQLObjectType,
   GraphQLString,
+  GraphQLFloat,
+  GraphQLBoolean,
 } from 'graphql';
 
 export const KeystoneGraphQLName = new GraphQLObjectType({
@@ -27,7 +29,7 @@ export const KeystoneGraphQLCloudinaryImage = new GraphQLObjectType({
       type: GraphQLString,
     },
     version: {
-      type: GraphQLInt,
+      type: GraphQLFloat,
     },
     signature: {
       type: GraphQLString,
@@ -53,6 +55,74 @@ export const KeystoneGraphQLCloudinaryImage = new GraphQLObjectType({
   },
 });
 
+export const KeystoneGraphQLEmbedly = new GraphQLObjectType({
+  name: 'KeystoneEmbedly',
+  fields: {
+    exists: { type: GraphQLBoolean },
+    type: { type: GraphQLString },
+    title: { type: GraphQLString },
+    url: { type: GraphQLString },
+    width: { type: GraphQLInt },
+    height: { type: GraphQLInt },
+    version: { type: GraphQLString },
+    description: { type: GraphQLString },
+    html: { type: GraphQLString },
+    authorName: { type: GraphQLString },
+    authorUrl: { type: GraphQLString },
+    providerName: { type: GraphQLString },
+    providerUrl: { type: GraphQLString },
+    thumbnailUrl: { type: GraphQLString },
+    thumbnailWidth: { type: GraphQLInt },
+    thumbnailHeight: { type: GraphQLInt },
+  },
+});
+
+export const KeystoneGraphQLLocalFile = new GraphQLObjectType({
+  name: 'KeystoneLocalFile',
+  fields: {
+    filename: { type: GraphQLString },
+    path: { type: GraphQLString },
+    size: { type: GraphQLInt },
+    filetype: { type: GraphQLString },
+    exists: { type: GraphQLBoolean },
+  },
+});
+
+export const KeystoneGraphQLS3File = new GraphQLObjectType({
+  name: 'KeystoneS3File',
+  fields: {
+    filename: { type: GraphQLString },
+    type: { type: GraphQLString },
+    filesize: { type: GraphQLInt },
+    url: { type: GraphQLString },
+    exists: { type: GraphQLBoolean },
+  },
+});
+
+export const KeystoneGraphQLAzureFile = new GraphQLObjectType({
+  name: 'KeystoneAzureFile',
+  fields: {
+    filename: {
+      type: GraphQLString,
+    },
+    type: {
+      type: GraphQLString,
+    },
+    filesize: {
+      type: GraphQLInt,
+    },
+    url: {
+      type: GraphQLString,
+    },
+    etag: {
+      type: GraphQLString,
+    },
+    exists: {
+      type: GraphQLBoolean,
+    },
+  },
+});
+
 export const KeystoneGraphQLLocation = new GraphQLObjectType({
   name: 'KeystoneLocation',
   fields: {
@@ -60,7 +130,7 @@ export const KeystoneGraphQLLocation = new GraphQLObjectType({
       type: GraphQLString,
     },
     number: {
-      type: GraphQLInt,
+      type: GraphQLString,
     },
     street1: {
       type: GraphQLString,
@@ -75,10 +145,10 @@ export const KeystoneGraphQLLocation = new GraphQLObjectType({
       type: GraphQLString,
     },
     postcode: {
-      type: GraphQLInt,
+      type: GraphQLString,
     },
     country: {
-      type: GraphQLInt,
+      type: GraphQLString,
     },
     geo: {
       type: new GraphQLList(GraphQLString),

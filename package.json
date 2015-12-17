@@ -1,7 +1,7 @@
 {
   "name": "keystone-graphql",
   "version": "1.0.0",
-  "description": "Create a GraphQL schema using your Keystone List's",
+  "description": "Makes it easier to create a GraphQL schema using your Keystone List's",
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run testonly",

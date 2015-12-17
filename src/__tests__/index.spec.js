@@ -23,23 +23,23 @@ describe('convertListToFields', () => {
   keystone.set('cloudinary config', { cloud_name: 'my-cloud', api_key: 'abc',
     api_secret: '123' });
 
-  it('can convert a really basic List', () => {
+  it('can convert a really basic List that uses GraphQL built in scalars', () => {
     const Post = new keystone.List('Post');
 
     Post.add({
-      title: { type: Types.Text, required: true, initial: false },
+      title: { type: Types.Text },
       subtitle: { type: String },
     });
 
     Post.register()
 
     expect(convertListToFields(Post)).to.deep.equal({
-      title: { type: new GraphQLNonNull(GraphQLString) },
+      title: { type: GraphQLString },
       subtitle: { type: GraphQLString },
     })
   });
 
-  it('can convert a more complex List', () => {
+  it('can convert a more complex List that uses Keystone GraphQL objects', () => {
     const Meetup = new keystone.List('Meetup');
 
     Meetup.add({
@@ -58,6 +58,22 @@ describe('convertListToFields', () => {
       picture: { type: KeystoneGraphQLCloudinaryImage },
       where: { type: KeystoneGraphQLLocation },
       mainContact: { type: KeystoneGraphQLEmail },
+    })
+  });
+
+  it('wraps types with non-null if they have the required option set', () => {
+    const Car = new keystone.List('Car');
+
+    Car.add({
+      name: { type: Types.Name, required: true },
+      description: { type: Types.Text, required: true, initial: true},
+    });
+
+    Car.register()
+
+    expect(convertListToFields(Car)).to.deep.equal({
+      name: { type: new GraphQLNonNull(KeystoneGraphQLName) },
+      description: { type: new GraphQLNonNull(GraphQLString)},
     })
   });
 });
