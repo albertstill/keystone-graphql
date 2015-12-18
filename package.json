@@ -1,12 +1,26 @@
 {
   "name": "keystone-graphql",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Makes it easier to create a GraphQL schema using your Keystone List's",
-  "main": "index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/albertstill/keystone-graphql",
+  "bugs": {
+    "url": "https://github.com/albertstill/keystone-graphql/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/albertstill/keystone-graphql.git"
+  },
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "./lib"
+  },
   "scripts": {
     "test": "npm run lint && npm run testonly",
     "testonly": "mocha --require babel-register src/__tests__/*.js",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "prepublish": "npm test && npm run build",
+    "build": "rm -rf lib/* && babel src --ignore __tests__ --out-dir lib"
   },
   "keywords": [
     "keystone",
@@ -15,8 +29,8 @@
     "react"
   ],
   "author": "Albert Still <albertjamesstill@gmail.com>",
-  "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.3.17",
     "babel-eslint": "^5.0.0-beta6",
     "babel-plugin-syntax-object-rest-spread": "^6.3.13",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
@@ -26,8 +40,7 @@
     "eslint": "^1.10.3",
     "mocha": "^2.3.4"
   },
-  "dependencies": {
-    "graphql": "^0.4.14",
-    "keystone": "https://github.com/keystonejs/keystone.git"
+  "peerDependencies": {
+    "graphql": "^0.4.14"
   }
 }
